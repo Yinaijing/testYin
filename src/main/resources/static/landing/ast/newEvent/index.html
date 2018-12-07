@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>事件实验</title>
+    <style >
+    	.btn{
+    		width: 140px;height: 30px;line-height: 30px;
+    		background: #fff;color:yellow; font-size: 15px;
+    		text-align: center;
+    		margin-left: 200px;
+    		margin-top: 200px;
+    		border-radius: 5px;cursor:pointer;
+    	}
+    </style>
+</head>
+<body>
+ <input type="button" value="摸小猫猫" onclick="alert('喵拳警告')">
+
+ <div id="btn" class="btn" onmouseover="mouseoverfn(this)" onmouseout="mouseoffFn(this)" >我TM会变色</div>
+ 
+ <script>
+ 	function mouseoverfn(btn){
+  btn.style.background="red";
+ 	}
+ 	function mouseoffFn(btn){
+ 		btn.style.background="black";
+ 	}
+ </script>
+</body>
+</html>

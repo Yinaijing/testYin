@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+  	<head>
+	    <meta charset="utf-8">
+	    <title>前卫物联系统</title>
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <meta name="description" content="">
+	    <meta name="author" content="">
+
+	    <!-- Bootstrap core CSS -->
+	    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		
+		<!-- Font Awesome -->
+		<link href="css/font-awesome.min.css" rel="stylesheet">
+
+		<!-- ionicons -->
+		<link href="css/ionicons.min.css" rel="stylesheet">
+		
+		<!-- datatable -->
+		<!--<link href="css/dataTables.bootstrap.css" rel="stylesheet">-->
+
+		<!-- Simplify -->
+		<link href="css/simplify.min.css" rel="stylesheet">
+
+		<link rel="stylesheet" href="css/style.css" media="screen" type="text/css">
+		<link rel="stylesheet" href="scss/style.scss" media="screen" type="text/scss">
+
+		<script type="text/javascript">
+			var state = 0;
+			var warn_switch=0;
+			if (warn_switch!=0){
+				
+			}
+
+
+
+		</script>
+
+		<script src="js/button.js"></script>
+
+
+  	</head>
+
+  	<body class="overflow-hidden">
+		<div class="wrapper preload">
+			
+				
+			
+			<header class="top-nav">
+				<!--正上方的header,有导航，并能缩放左右侧边栏，左侧边栏为菜单，右侧边栏为聊天栏（尚未开发）-->
+				<div class="top-nav-inner">
+					<div class="nav-header" style="margin-left: -15px">
+						<!--HEADER,公司的名称和LOGO-->
+						<a href="index.html" class="brand">
+							<span><img src="images/logo.png" alt="logo" height=50px></span>
+							<span class="brand-name">前卫科技物联系统</span>
+						</a>
+					</div>
+					<div class="nav-container">
+						 <!--点击按钮可滑入滑出左侧边栏-->
+						<button type="button" class="navbar-toggle pull-left sidebar-toggle" id="sidebarToggleLG">
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+
+						<!--搜索栏，可自动滑入-->
+						<ul class="nav-notification">	
+							<li class="search-list">
+								<div class="search-input-wrapper">
+									<div class="search-input">
+										<input type="text" class="form-control input-sm inline-block">
+										<a href="#" class="input-icon text-normal"><i class="ion-ios7-search-strong"></i></a>
+									</div>
+								</div>
+							</li>
+						</ul>
+
+
+						<!--用户信息栏-->
+						<div class="pull-right m-right-sm" style="margin-right: 30px">
+							<div class="user-block hidden-xs">
+								<!--用户头像与ID-->
+								<a href="#" id="userToggle" data-toggle="dropdown">
+									<img src="images/profile/mjl.png" alt="" class="img-circle inline-block user-profile-pic">
+									<div class="user-detail inline-block">
+										<strong>苗金凤</strong>
+										<i class="fa fa-angle-down"></i>
+									</div>
+								</a>
+
+								<!--下拉菜单，可跳转至用户主页和登出-->
+								<div class="panel border dropdown-menu user-panel">
+									<div class="panel-body paddingTB-sm">
+										<ul>
+											<li>
+												<a href="profile.html">
+													<i class="fa fa-edit fa-lg"></i><span class="m-left-xs">我的主页</span>
+												</a>
+											</li>
+											<li>
+												<a href="inbox.html">
+													<i class="fa fa-inbox fa-lg"></i><span class="m-left-xs">我的信箱</span>
+													<span class="badge badge-danger bounceIn animation-delay3">2</span>
+												</a>
+											</li>
+											<li>
+												<a href="signin.html">
+													<i class="fa fa-power-off fa-lg"></i><span class="m-left-xs">登出</span>
+												</a>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+							<ul class="nav-notification">
+								<li>
+									<a href="#" data-toggle="dropdown"><i class="fa fa-envelope fa-lg"></i></a>
+									<!--带有动画效果的划动下拉菜单-->
+									<span class="badge badge-purple bounceIn animation-delay5 active">2</span>
+									<ul class="dropdown-menu message pull-right">
+										<li><a>您有2封未读信息</a></li>					  
+										<li>
+											<a class="clearfix" href="#">
+												<img src="images/profile/profile2.jpg" alt="User Avatar">
+												<div class="detail">
+													<strong>尹爱静</strong>
+													<p class="no-margin">
+														小苗我们数据库炸了
+													</p>
+													<small class="text-muted"><i class="fa fa-check text-success"></i> 27分钟 前</small>
+												</div>
+											</a>	
+										</li>
+										<li>
+											<a class="clearfix" href="#">
+												<img src="images/profile/profile3.jpg" alt="User Avatar">
+												<div class="detail">
+													<strong>欧所</strong>
+													<p class="no-margin">
+														小苗你看下这个传感器
+													</p>
+													<small class="text-muted"><i class="fa fa-check text-success"></i> 5小时 ago</small>
+												</div>
+											</a>	
+										</li>
+										<li>
+											<a class="clearfix" href="#">
+												<img src="images/profile/profile4.jpg" alt="User Avatar">
+												<div class="detail m-left-sm">
+													<strong>苗金龙</strong>
+													<p class="no-margin">
+														妹妹帮我写个服务端
+													</p>
+													<small class="text-muted"><i class="fa fa-reply"></i> 昨天</small>
+												</div>
+											</a>	
+										</li>
+										<li>
+											<a class="clearfix" href="#">
+												<img src="images/profile/profile5.jpg" alt="User Avatar">
+												<div class="detail">
+													<strong>苏工</strong>
+													<p class="no-margin">
+														明天下午8点开会
+													</p>
+													<small class="text-muted"><i class="fa fa-reply"></i> 昨天</small>
+												</div>
+											</a>	
+										</li>
+										<li><a href="#">查看更多消息</a></li>					  
+									</ul>
+								</li>
+
+								<li>
+									<a href="#" data-toggle="dropdown"><i class="fa fa-bell fa-lg"></i></a>
+									<span class="badge badge-info bounceIn animation-delay6 active">4</span>
+								</li>
+
+								<li class="chat-notification">
+									<a href="#"><i class="fa fa-comments fa-lg"></i></a>
+									<span class="badge badge-danger bounceIn">1</span>
+
+									<div class="chat-alert">
+										我并没有做这个功能，只是写着好看
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<!--顶部导航，结束 -->	
+			</header>
+
+
+			<!--左侧导航-->
+			<style type="text/css">
+				.sidebar-menu .main-menu ul li a{
+					font-size:13px;
+				}
+			</style>
+			<aside class="sidebar-menu fixed">
+				<div class="sidebar-inner scrollable-sidebar">
+					<div class="main-menu">
+						<ul class="accordion">
+							<li class="menu-header">
+								主菜单
+							</li>
+							<li class="openable bg-palette1">
+								<a href="index.html">
+									<span class="menu-content block">
+										<span class="menu-icon"><i class="block fa fa-home fa-lg"></i></span>
+										<span class="text m-left-sm">主页</span>
+									</span>
+									<span class="menu-content-hover block">
+										主页
+									</span>
+								</a>
+							</li>
+							
+							
+							<li class="openable bg-palette4 open" id="bg">
+								<a href="#">
+									<span class="menu-content block">
+										<span class="menu-icon"><i class="block fa fa-tags fa-lg"></i></span>
+										<span class="text m-left-sm">数据可视化</span>
+										<span class="submenu-icon"></span>
+									</span>
+									<span class="menu-content-hover block">
+										数据表
+									</span>
+								</a>
+								<ul class="submenu">
+									<li class="active"><a href="ui_element.html"><span class="submenu-label">数据收集</span></a></li>
+									<li class="none" ><a id="warn" href="button.html">
+									<span class="submenu-label">警报数据</span>
+									<small class="badge badge-danger badge-square bounceIn animation-delay2 m-left-xs pull-right" id="warnCount" style="display: none">2</small></a></li>
+									<li class="none"><a href="button.html"><span class="submenu-label">数据统计</span></a></li>
+									<li class="openable ">
+										<a href="#">
+											<span class="submenu-label">数据分析</span>
+										</a>
+										<ul class="submenu third-level">
+											<li><a href="static_table.html"><span class="submenu-label">静态分析</span></a></li>
+											<li ><a href="datatable.html"><span class="submenu-label">动态分析</span></a></li>
+										</ul>
+									</li>
+									
+								</ul>
+							</li>
+
+							<li class="bg-palette1">
+								<a href="inbox.html">
+									<span class="menu-content block">
+										<span class="menu-icon"><i class="block fa fa-envelope fa-lg"></i></span>
+										<span class="text m-left-sm">邮箱</span>
+										<small class="badge badge-success badge-square bounceIn animation-delay5 m-left-xs">5</small>
+									</span>
+									<span class="menu-content-hover block">
+										信息
+									</span>
+								</a>
+							</li>
+							<li class="bg-palette2">
+								<a href="timeline.html">
+									<span class="menu-content block">
+										<span class="menu-icon"><i class="block fa fa-clock-o fa-lg"></i></span>
+										<span class="text m-left-sm">时间线</span>
+										<small class="badge badge-warning badge-square bounceIn animation-delay6 m-left-xs pull-right">7</small>
+									</span>
+									<span class="menu-content-hover block">
+										时间线
+									</span>
+								</a>
+							</li>
+							<li class="menu-header">
+								其他
+							</li>
+							<li class="openable bg-palette3">
+								<a href="#">
+									<span class="menu-content block">
+										<span class="menu-icon"><i class="block fa fa-gift fa-lg"></i></span>
+										<span class="text m-left-sm">其他页面</span>
+										<span class="submenu-icon"></span>
+									</span>
+									<span class="menu-content-hover block">
+										页面
+									</span>
+								</a>
+								<ul class="submenu">
+									<li><a href="signin.html"><span class="submenu-label">注册</span></a></li>
+									<li><a href="signup.html"><span class="submenu-label">登录</span></a></li>
+									<li><a href="lockscreen.html"><span class="submenu-label">设备管理</span></a></li>
+									<li><a href="profile.html"><span class="submenu-label">个人中心</span></a></li>
+									<li><a href="gallery.html"><span class="submenu-label">开发者交流</span></a></li>
+									<li><a href="blog.html"><span class="submenu-label">BUG回馈</span></a></li>
+									
+								</ul>
+							</li>
+
+
+							<li class="openable bg-palette4">
+								<a href="#">
+									<span class="menu-content block">
+										<span class="menu-icon"><i class="block fa fa-list fa-lg"></i></span>
+										<span class="text m-left-sm">版本查询</span>
+										<span class="submenu-icon"></span>
+									</span>
+									<span class="menu-content-hover block">
+										版本查询
+									</span>
+								</a>
+								<ul class="submenu">
+									<li class="openable">
+										<a href="signin.html">
+											<span class="submenu-label">版本 2.1</span>
+											<small class="badge badge-success badge-square bounceIn animation-delay2 m-left-xs pull-right">3</small>
+										</a>
+										<ul class="submenu third-level">
+											<li><a href="#"><span class="submenu-label">版本 3.1</span></a></li>
+											<li><a href="#"><span class="submenu-label">版本 3.2</span></a></li>
+											<li class="openable">
+												<a href="#">
+													<span class="submenu-label">版本 3.3</span>
+													<small class="badge badge-danger badge-square bounceIn animation-delay2 m-left-xs pull-right">2</small>
+												</a>
+												<ul class="submenu fourth-level">
+													<li><a href="#"><span class="submenu-label">版本 4.1</span></a></li>
+													<li><a href="#"><span class="submenu-label">版本 4.2</span></a></li>
+												</ul>
+											</li>
+										</ul>
+									</li>
+									<li><a href="#"><span class="submenu-label">版本 2.2</span></a></li>
+								</ul>
+							</li>
+						</ul>
+					</div>	
+					<div class="sidebar-fix-bottom clearfix">
+						<div class="user-dropdown dropup pull-left">
+							<a href="#" class="dropdwon-toggle font-18" data-toggle="dropdown"><i class="ion-person-add"></i>
+							</a>
+							<!--
+							<ul class="dropdown-menu">
+								<li>
+									<a href="inbox.html">
+										
+										<span class="badge badge-danger bounceIn animation-delay2 pull-right">1</span>
+									</a>
+								</li>			  
+								<li>
+									<a href="#">
+										Notification
+										<span class="badge badge-purple bounceIn animation-delay3 pull-right">2</span>
+									</a>
+								</li>			  
+								<li>
+									<a href="#" class="sidebarRight-toggle">
+										Message
+										<span class="badge badge-success bounceIn animation-delay4 pull-right">7</span>
+									</a>
+								</li>			  	  
+								<li class="divider"></li>
+								<li>
+									<a href="#">Setting</a>
+								</li>			  	  
+							</ul>
+						-->
+						</div>
+						<a href="lockscreen.html" class="pull-right font-18"><i class="ion-log-out"></i></a>
+					</div>
+				</div><!-- sidebar-inner -->
+			</aside>
+			
+			<div class="main-container">
+
+				<div class="padding-md">
+
+					<ul class="breadcrumb">
+						<li><span class="primary-font"><i class="icon-home"></i></span><a href="index.html"> 主页</a></li>
+						<li>数据页</li>	 
+						<li>数据接收</li>	
+						<li><button onclick="clickDataAccess()">接收数据</button></li>
+						<li><button id="stopButton">停止接收</button></li>
+					</ul>
+
+
+					 <div class="pic" id="pic" style="background-image: url(images/1.jpg); width: 100%; height: 300px;margin-bottom: 10px">
+  <div class="wrap">
+  <div class="bg">
+    <div class="loading">
+      <span class="title">loading</span>
+      <span class="text">data is accessing...</span>
+    </div>
+  </div>
+</div>
+
+  <script src='js/jquery.js'></script>
+
+
+
+
+
+<div id="preload" style="display: block;">
+<div class="row m-top-md">
+						<div class="col-lg-3 col-sm-6">
+							<div class="statistic-box  m-bottom-md bg-dark-blue" >
+								<div class="statistic-title">
+									今日接入量
+								</div>
+
+								<div class="statistic-value">
+									96.7k
+								</div>
+
+								<div class="m-top-md">高于昨日11% </div>
+
+								<div class="statistic-icon-background">
+									<i class="fa fa-link fa-spin"></i>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-lg-3 col-sm-6">
+							<div class="statistic-box  m-bottom-md bg-info" >
+								<div class="statistic-title">
+									今日总充电量
+								</div>
+
+								<div class="statistic-value">
+									751
+								</div>
+
+								<div class="m-top-md">高于昨日8% </div>
+
+								<div class="statistic-icon-background">
+									<i class="ion-flash"></i>
+								</div>
+                                
+							</div>
+						</div>
+
+						<div class="col-lg-3 col-sm-6">
+							<div class="statistic-box  m-bottom-md bg-success" >
+								<div class="statistic-title">
+									今日总设备量
+								</div>
+
+								<div class="statistic-value">
+									129
+								</div>
+
+								<div class="m-top-md">高于昨日3%</div>
+
+								<div class="statistic-icon-background">
+									<i class="ion-steam"></i>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-lg-3 col-sm-6">
+							<div class="statistic-box m-bottom-md bg-dark-blue bg-yellow" >
+								<div class="statistic-title">
+									今日总节能
+								</div>
+
+								<div class="statistic-value">
+									124.45k
+								</div>
+
+								<div class="m-top-md">高于昨日5%</div>
+
+								<div class="statistic-icon-background">
+									<i class="fa fa-refresh fa-spin"></i>
+								</div>
+							</div>
+						</div>
+					</div>
+
+                                  <div id="tabletable" style="margin-top: 10px; margin-bottom: 50px" >
+									<table class="table table-striped ">
+										<thead>
+											<tr>
+												<th class="text-right">日期</th>
+												<th class="text-right">数据库使用</th>
+												<th class="text-right">CPU使用</th>
+												<th class="text-right">带宽使用</th>
+												<th class="text-right">总功能</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td class="text-right">July, 11</td>
+												<td class="text-right">31.05%</td>
+												<td class="text-right">65.12%</td>
+												<td class="text-right">86.41%</td>
+												<td class="text-right">
+													<div class="progress progress-sm inline-block m-bottom-none" style="width:100px; margin-top:6px">
+													  <div class="progress-bar progress-bar-success" style="width: 54.41%;">
+													    <span class="sr-only">54.41% </span>
+													  </div>
+													</div>
+
+													<span class="m-left-sm vertical-top">54.41%</span>
+												</td>
+											</tr>
+											<tr>
+												<td class="text-right">July, 12</td>
+												<td class="text-right">48.99%</td>
+												<td class="text-right">72.31%</td>
+												<td class="text-right">74.21%</td>
+												<td class="text-right">
+													<div class="progress progress-sm inline-block m-bottom-none" style="width:100px; margin-top:6px">
+													  <div class="progress-bar progress-bar-warning" style="width: 69.92%;">
+													    <span class="sr-only">69.92% </span>
+													  </div>
+													</div>
+
+													<span class="m-left-sm vertical-top">69.92%</span>
+												</td>
+											</tr>
+											<tr>
+												<td class="text-right">July, 13</td>
+												<td class="text-right">13.68%</td>
+												<td class="text-right">32.31%</td>
+												<td class="text-right">50.82%</td>
+												<td class="text-right">
+													<div class="progress progress-sm inline-block m-bottom-none" style="width:100px; margin-top:6px">
+													  <div class="progress-bar progress-bar-danger" style="width: 43.17%;">
+													    <span class="sr-only">43.17% </span>
+													  </div>
+													</div>
+
+													<span class="m-left-sm vertical-top">43.17%</span>
+												</td>
+											</tr>
+											<tr>
+												<td class="text-right">July, 14</td>
+												<td class="text-right">9.23%</td>
+												<td class="text-right">11.91%</td>
+												<td class="text-right">10.21%</td>
+												<td class="text-right">
+													<div class="progress progress-sm inline-block m-bottom-none" style="width:100px; margin-top:6px">
+													  <div class="progress-bar progress-bar-success" style="width: 12.11%;">
+													    <span class="sr-only">12.11% </span>
+													  </div>
+													</div>
+
+													<span class="m-left-sm vertical-top">12.11%</span>
+												</td>
+											</tr>
+
+												<td class="text-right">July, 12</td>
+												<td class="text-right">48.99%</td>
+												<td class="text-right">72.31%</td>
+												<td class="text-right">74.21%</td>
+												<td class="text-right">
+													<div class="progress progress-sm inline-block m-bottom-none" style="width:100px; margin-top:6px">
+													  <div class="progress-bar progress-bar-warning" style="width: 69.92%;">
+													    <span class="sr-only">69.92% </span>
+													  </div>
+													</div>
+
+													<span class="m-left-sm vertical-top">69.92%</span>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								    </div>
+
+
+								</div>
+
+            <div id="statistics" style="display: none">
+                    <div class="row m-top-md">
+						<div class="col-lg-3 col-sm-6">
+							<div class="statistic-box  m-bottom-md bg-dark-blue" >
+								<div class="statistic-title">
+									总接收次数
+								</div>
+
+								<div class="statistic-value" id="accessingTimes">
+									0
+								</div>
+
+								<div class="m-top-md">正在为设备努力充电~ </div>
+
+								<div class="statistic-icon-background">
+									<i class="fa fa-link fa-spin"></i>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-lg-3 col-sm-6">
+							<div class="statistic-box  m-bottom-md badge-danger" >
+								<div class="statistic-title">
+									今日警报次数
+								</div>
+
+								<div class="statistic-value" id="errorTimes">
+									0
+								</div>
+
+								<div class="m-top-md">请前往警报页面查看</div>
+
+								<div class="statistic-icon-background">
+									<i class="fa fa-warning"></i>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-lg-3 col-sm-6">
+							<div class="statistic-box m-bottom-md bg-dark-blue bg-yellow" style="background-color: #efc628" >
+								<div class="statistic-title">
+									今日危险数据数量
+								</div>
+
+								<div class="statistic-value" id="warnTimes">
+									0
+								</div>
+
+								<div class="m-top-md">我编不出来了</div>
+
+								<div class="statistic-icon-background">
+									<i class="fa fa-chain-broken"></i>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-lg-3 col-sm-6">
+							<div class="statistic-box  m-bottom-md bg-dark-blue" >
+								<div class="statistic-title">
+									总充电量
+								</div>
+
+								<div class="statistic-value">
+									751
+								</div>
+
+								<div class="m-top-md">高于同类型其他产品3% </div>
+
+								<div class="statistic-icon-background">
+									<i class="fa fa-refresh fa-spin"></i>
+								</div>
+							</div>
+						</div>
+
+
+
+
+					</div>
+				</div>
+
+
+
+
+
+
+                    <div class="datatable" id="table" style="display: none;">
+
+
+
+					<table class="table table-striped" id="dataTable">
+						<thead>
+							<tr>
+								<th>编号</th>
+								<th>设备名</th>
+								<th>电压</th>
+								<th>电流</th>
+								<th>温度</th>
+								<th>日期</th>
+								<th>状态</th>
+							</tr>
+						</thead>
+						<tbody>
+
+						</tbody>
+					</table>
+					 </div>
+
+
+			<footer class="footer" style="margin-left: 0px;margin-top: 20px；position: relative;">
+				<span class="footer-brand" style="margin-left: 130px">
+					<strong class="text-danger">前卫</strong>科技
+				</span>
+				<p class="no-margin">
+					&copy; 2018 <strong>前卫科技</strong>. ALL Rights Reserved.
+				</p>
+			</footer>
+
+				</div><!-- ./padding-md -->
+			</div><!-- /main-container -->
+
+		</div><!-- /wrapper -->
+
+		<a href="#" class="scroll-to-top hidden-print"><i class="fa fa-chevron-up fa-lg"></i></a>
+
+	    <!-- Le javascript
+	    ================================================== -->
+	    <!-- Placed at the end of the document so the pages load faster -->
+
+		<!-- Jquery -->
+		<script src="js/jquery-1.11.1.min.js"></script>
+
+		<!-- Bootstrap -->
+	    <script src="bootstrap/js/bootstrap.min.js"></script>
+
+		<!-- Datatable -->
+		<!--<script src='js/jquery.dataTables.min.js'></script>
+		<script src='js/uncompressed/dataTables.bootstrap.js'></script>-->
+
+		<!-- Slimscroll -->
+		<script src='js/jquery.slimscroll.min.js'></script>
+
+		<!-- Popup Overlay -->
+		<script src='js/jquery.popupoverlay.min.js'></script>
+
+		<!-- Modernizr -->
+		<script src='js/modernizr.min.js'></script>
+
+		<!-- Simplify -->
+		<script src="js/simplify/simplify.js"></script>
+
+		<!--<script>
+			$(function()	{
+			    $('#dataTable').dataTable();
+			});
+		</script>-->
+
+  	</body>
+</html>

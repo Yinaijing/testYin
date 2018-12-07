@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.winterchen.dao.AbnormalDataMapper" >
+  <resultMap id="BaseResultMap" type="com.winterchen.model.AbnormalData" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="timestamp" property="timestamp" jdbcType="TIMESTAMP" />
+    <result column="ip" property="ip" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="input_volt" property="inputVolt" jdbcType="DOUBLE" />
+    <result column="output_volt" property="outputVolt" jdbcType="DOUBLE" />
+    <result column="version" property="version" jdbcType="VARCHAR" />
+    <result column="dcdc_reference_volt" property="dcdcReferenceVolt" jdbcType="DOUBLE" />
+    <result column="dcac_reference_power" property="dcacReferencePower" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, timestamp, ip, type, input_volt, output_volt, version, dcdc_reference_volt, dcac_reference_power
+  </sql>
+
+  <select id="selectAb" resultMap="BaseResultMap">
+    select * from data_ab
+    where substring(ip,2,13)=#{ip,jdbcType=VARCHAR}
+    and timestamp between #{t1,jdbcType=VARCHAR} and #{t2,jdbcType=VARCHAR}
+  </select>
+
+  <select id="avgVoltAb" parameterType="String" resultType="Double">
+    select AVG(output_volt)
+    from data_ab
+    where substring(ip,2,13)=#{ip,jdbcType=VARCHAR}
+    and substring(timestamp,1,10) between #{beginDay} and #{endDay}
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from data_ab
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <update id="createAbTable" parameterType="String">
+    CREATE TABLE ${abTableName} (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    timestamp DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    ip VARCHAR(50) NOT NULL DEFAULT '0' COLLATE 'utf8_unicode_ci',
+    type INT(11) NOT NULL DEFAULT '0',
+    input_volt DOUBLE NOT NULL DEFAULT '0',
+    output_volt DOUBLE NOT NULL DEFAULT '0',
+    version VARCHAR(50) NOT NULL DEFAULT '0' COLLATE 'utf8_unicode_ci',
+    dcdc_reference_volt DOUBLE NOT NULL DEFAULT '0',
+    dcac_reference_power DOUBLE NOT NULL DEFAULT '0',
+    PRIMARY KEY (id)
+    )
+    COLLATE='utf8_unicode_ci'
+    ENGINE=InnoDB
+    AUTO_INCREMENT=1;
+  </update>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from data_ab
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insertAb">
+    insert into data_ab (id, timestamp, ip, 
+      type, input_volt, output_volt, 
+      version, dcdc_reference_volt, dcac_reference_power
+      )
+    values (#{id,jdbcType=INTEGER}, #{timestamp,jdbcType=TIMESTAMP}, #{ip,jdbcType=VARCHAR}, 
+      #{type,jdbcType=INTEGER}, #{inputVolt,jdbcType=DOUBLE}, #{outputVolt,jdbcType=DOUBLE}, 
+      #{version,jdbcType=VARCHAR}, #{dcdcReferenceVolt,jdbcType=DOUBLE}, #{dcacReferencePower,jdbcType=DOUBLE}
+      )
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.winterchen.model.AbnormalData" >
+    insert into data_ab
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="timestamp != null" >
+        timestamp,
+      </if>
+      <if test="ip != null" >
+        ip,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="inputVolt != null" >
+        input_volt,
+      </if>
+      <if test="outputVolt != null" >
+        output_volt,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="dcdcReferenceVolt != null" >
+        dcdc_reference_volt,
+      </if>
+      <if test="dcacReferencePower != null" >
+        dcac_reference_power,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="timestamp != null" >
+        #{timestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ip != null" >
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="inputVolt != null" >
+        #{inputVolt,jdbcType=DOUBLE},
+      </if>
+      <if test="outputVolt != null" >
+        #{outputVolt,jdbcType=DOUBLE},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="dcdcReferenceVolt != null" >
+        #{dcdcReferenceVolt,jdbcType=DOUBLE},
+      </if>
+      <if test="dcacReferencePower != null" >
+        #{dcacReferencePower,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.winterchen.model.AbnormalData" >
+    update data_ab
+    <set >
+      <if test="timestamp != null" >
+        timestamp = #{timestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ip != null" >
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="inputVolt != null" >
+        input_volt = #{inputVolt,jdbcType=DOUBLE},
+      </if>
+      <if test="outputVolt != null" >
+        output_volt = #{outputVolt,jdbcType=DOUBLE},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="dcdcReferenceVolt != null" >
+        dcdc_reference_volt = #{dcdcReferenceVolt,jdbcType=DOUBLE},
+      </if>
+      <if test="dcacReferencePower != null" >
+        dcac_reference_power = #{dcacReferencePower,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.winterchen.model.AbnormalData" >
+    update data_ab
+    set timestamp = #{timestamp,jdbcType=TIMESTAMP},
+      ip = #{ip,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      input_volt = #{inputVolt,jdbcType=DOUBLE},
+      output_volt = #{outputVolt,jdbcType=DOUBLE},
+      version = #{version,jdbcType=VARCHAR},
+      dcdc_reference_volt = #{dcdcReferenceVolt,jdbcType=DOUBLE},
+      dcac_reference_power = #{dcacReferencePower,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

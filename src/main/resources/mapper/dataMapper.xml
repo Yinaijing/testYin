@@ -1,0 +1,656 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.winterchen.dao.dataMapper" >
+  <resultMap id="BaseResultMap" type="com.winterchen.model.data" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="timestamp" property="timestamp" jdbcType="TIMESTAMP" />
+    <result column="ip" property="ip" jdbcType="VARCHAR" />
+    <result column="iap_state" property="iapState" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="operating_state" property="operatingState" jdbcType="INTEGER" />
+    <result column="station_state" property="stationState" jdbcType="INTEGER" />
+    <result column="input_volt" property="inputVolt" jdbcType="DOUBLE" />
+    <result column="input_curr" property="inputCurr" jdbcType="DOUBLE" />
+    <result column="output_volt" property="outputVolt" jdbcType="DOUBLE" />
+    <result column="output_curr" property="outputCurr" jdbcType="DOUBLE" />
+    <result column="coil_curr" property="coilCurr" jdbcType="DOUBLE" />
+    <result column="inverter_temp" property="inverterTemp" jdbcType="DOUBLE" />
+    <result column="output_power" property="outputPower" jdbcType="DOUBLE" />
+    <result column="bat_max_volt" property="batMaxVolt" jdbcType="DOUBLE" />
+    <result column="bat_max_curr" property="batMaxCurr" jdbcType="DOUBLE" />
+    <result column="remaining_charging_time" property="remainingChargingTime" jdbcType="DOUBLE" />
+    <result column="version" property="version" jdbcType="VARCHAR" />
+    <result column="dcdc_state" property="dcdcState" jdbcType="INTEGER" />
+    <result column="dcdc_reference_volt" property="dcdcReferenceVolt" jdbcType="DOUBLE" />
+    <result column="dcdc_output_volt" property="dcdcOutputVolt" jdbcType="DOUBLE" />
+    <result column="dcdc_output_curr" property="dcdcOutputCurr" jdbcType="DOUBLE" />
+    <result column="dcac_state" property="dcacState" jdbcType="INTEGER" />
+    <result column="dcac_input_volt" property="dcacInputVolt" jdbcType="DOUBLE" />
+    <result column="dcac_input_curr" property="dcacInputCurr" jdbcType="DOUBLE" />
+    <result column="dcac_reference_power" property="dcacReferencePower" jdbcType="DOUBLE" />
+    <result column="dcac_output_power" property="dcacOutputPower" jdbcType="DOUBLE" />
+    <result column="dcac_temp_igbt1" property="dcacTempIgbt1" jdbcType="DOUBLE" />
+    <result column="dcac_temp_igbt2" property="dcacTempIgbt2" jdbcType="DOUBLE" />
+    <result column="dcac_temp_resonant_inductor" property="dcacTempResonantInductor" jdbcType="DOUBLE" />
+    <result column="dcac_temp_transformer" property="dcacTempTransformer" jdbcType="DOUBLE" />
+    <result column="dcac_insulation_resistance" property="dcacInsulationResistance" jdbcType="DOUBLE" />
+    <result column="dcac_temp_coil" property="dcacTempCoil" jdbcType="DOUBLE" />
+    <result column="ivu_state" property="ivuState" jdbcType="INTEGER" />
+    <result column="ivu_relay_volt" property="ivuRelayVolt" jdbcType="DOUBLE" />
+    <result column="ivu_bat_charging_volt" property="ivuBatChargingVolt" jdbcType="DOUBLE" />
+    <result column="ivu_bat_charging_curr" property="ivuBatChargingCurr" jdbcType="DOUBLE" />
+    <result column="ivu_bat_max_volt" property="ivuBatMaxVolt" jdbcType="DOUBLE" />
+    <result column="ivu_bat_max_curr" property="ivuBatMaxCurr" jdbcType="DOUBLE" />
+    <result column="ivu_charged_energy" property="ivuChargedEnergy" jdbcType="DOUBLE" />
+    <result column="ivu_remaining_charging_time" property="ivuRemainingChargingTime" jdbcType="DOUBLE" />
+    <result column="soc" property="soc" jdbcType="INTEGER" />
+    <result column="ivu_temp_coil1" property="ivuTempCoil1" jdbcType="DOUBLE" />
+    <result column="ivu_temp_coil2" property="ivuTempCoil2" jdbcType="DOUBLE" />
+    <result column="ivu_temp_igbt1" property="ivuTempIgbt1" jdbcType="DOUBLE" />
+    <result column="ivu_temp_igbt2" property="ivuTempIgbt2" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, timestamp, ip, iap_state, type, operating_state, station_state, input_volt, input_curr, 
+    output_volt, output_curr, coil_curr, inverter_temp, output_power, bat_max_volt, bat_max_curr, 
+    remaining_charging_time, version, dcdc_state, dcdc_reference_volt, dcdc_output_volt, 
+    dcdc_output_curr, dcac_state, dcac_input_volt, dcac_input_curr, dcac_reference_power, 
+    dcac_output_power, dcac_temp_igbt1, dcac_temp_igbt2, dcac_temp_resonant_inductor, 
+    dcac_temp_transformer, dcac_insulation_resistance, dcac_temp_coil, ivu_state, ivu_relay_volt, 
+    ivu_bat_charging_volt, ivu_bat_charging_curr, ivu_bat_max_volt, ivu_bat_max_curr, 
+    ivu_charged_energy, ivu_remaining_charging_time, soc, ivu_temp_coil1, ivu_temp_coil2, 
+    ivu_temp_igbt1, ivu_temp_igbt2
+  </sql>
+
+  <select id="getTime" resultType="com.winterchen.model.data">
+    select * from data_1
+    where id = #{id}
+  </select>
+
+  <select id="selectDatas" resultMap="BaseResultMap">
+    select * from ${tableName}
+    where timestamp between #{beginTime} and #{endTime}
+    and substring(ip,2,13)=#{ip}
+    and substring(id)=#{id}
+  </select>
+
+  <select id="existTable" parameterType="String" resultType="Integer">
+    select count(*)
+    from information_schema.TABLES
+    where table_schema = "transmitter_manager-20181028"
+    and LCASE(table_name)=#{tableName}
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from data_test
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from data_test
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <update id="createTable" parameterType="String">
+    CREATE TABLE ${tableName} (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    timestamp DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    ip VARCHAR(50) NOT NULL DEFAULT '0' COLLATE 'utf8_unicode_ci',
+    iap_state VARCHAR(50) NULL DEFAULT '0' COLLATE 'utf8_unicode_ci',
+    type INT(11) NOT NULL DEFAULT '0',
+    operating_state INT(11) NOT NULL DEFAULT '0',
+    station_state VARCHAR(50) NULL DEFAULT '0' COLLATE 'utf8_unicode_ci',
+    input_volt DOUBLE NOT NULL DEFAULT '0',
+    input_curr DOUBLE NOT NULL DEFAULT '0',
+    output_volt DOUBLE NOT NULL DEFAULT '0',
+    output_curr DOUBLE NOT NULL DEFAULT '0',
+    coil_curr VARCHAR(50) NOT NULL DEFAULT '0' COLLATE 'utf8_unicode_ci',
+    inverter_temp DOUBLE NOT NULL DEFAULT '0',
+    output_power DOUBLE NOT NULL DEFAULT '0',
+    bat_max_volt VARCHAR(50) NULL DEFAULT '0' COLLATE 'utf8_unicode_ci',
+    bat_max_curr VARCHAR(50) NULL DEFAULT '0' COLLATE 'utf8_unicode_ci',
+    remaining_charging_time VARCHAR(50) NULL DEFAULT '0' COLLATE 'utf8_unicode_ci',
+    version VARCHAR(50) NOT NULL DEFAULT '0' COLLATE 'utf8_unicode_ci',
+    dcdc_state VARCHAR(50) NULL DEFAULT '0' COLLATE 'utf8_unicode_ci',
+    dcdc_reference_volt VARCHAR(50) NULL DEFAULT '0' COLLATE 'utf8_unicode_ci',
+    dcdc_output_volt VARCHAR(50) NULL DEFAULT '0' COLLATE 'utf8_unicode_ci',
+    dcdc_output_curr VARCHAR(50) NULL DEFAULT '0' COLLATE 'utf8_unicode_ci',
+    dcac_state DOUBLE NOT NULL DEFAULT '0',
+    dcac_input_volt DOUBLE NOT NULL DEFAULT '0',
+    dcac_input_curr DOUBLE NOT NULL DEFAULT '0',
+    dcac_reference_power DOUBLE NOT NULL DEFAULT '0',
+    dcac_output_power DOUBLE NOT NULL DEFAULT '0',
+    dcac_temp_igbt1 DOUBLE NOT NULL DEFAULT '0',
+    dcac_temp_igbt2 DOUBLE NOT NULL DEFAULT '0',
+    dcac_temp_resonant_inductor DOUBLE NOT NULL DEFAULT '0',
+    dcac_temp_transformer DOUBLE NOT NULL DEFAULT '0',
+    dcac_insulation_resistance DOUBLE NOT NULL DEFAULT '0',
+    dcac_temp_coil DOUBLE NOT NULL DEFAULT '0',
+    ivu_state VARCHAR(50) NULL DEFAULT '0' COLLATE 'utf8_unicode_ci',
+    ivu_relay_volt VARCHAR(50) NULL DEFAULT '0' COLLATE 'utf8_unicode_ci',
+    ivu_bat_charging_volt VARCHAR(50) NULL DEFAULT '0' COLLATE 'utf8_unicode_ci',
+    ivu_bat_charging_curr VARCHAR(50) NULL DEFAULT '0' COLLATE 'utf8_unicode_ci',
+    ivu_bat_max_volt VARCHAR(50) NULL DEFAULT '0' COLLATE 'utf8_unicode_ci',
+    ivu_bat_max_curr VARCHAR(50) NULL DEFAULT '0' COLLATE 'utf8_unicode_ci',
+    ivu_charged_energy VARCHAR(50) NULL DEFAULT '0' COLLATE 'utf8_unicode_ci',
+    ivu_remaining_charging_time VARCHAR(50) NULL DEFAULT '0' COLLATE 'utf8_unicode_ci',
+    soc VARCHAR(50) NULL DEFAULT '0' COLLATE 'utf8_unicode_ci',
+    ivu_temp_coil1 VARCHAR(50) NULL DEFAULT '0' COLLATE 'utf8_unicode_ci',
+    ivu_temp_coil2 VARCHAR(50) NULL DEFAULT '0' COLLATE 'utf8_unicode_ci',
+    ivu_temp_igbt1 VARCHAR(50) NULL DEFAULT '0' COLLATE 'utf8_unicode_ci',
+    ivu_temp_igbt2 VARCHAR(50) NULL DEFAULT '0' COLLATE 'utf8_unicode_ci',
+    PRIMARY KEY (id)
+    )
+    COLLATE='utf8_unicode_ci'
+    ENGINE=InnoDB
+    AUTO_INCREMENT=1;
+  </update>
+
+  <insert id="insert" parameterType="com.winterchen.model.data" >
+    insert into data_test (id, timestamp, ip, 
+      iap_state, type, operating_state, 
+      station_state, input_volt, input_curr, 
+      output_volt, output_curr, coil_curr, 
+      inverter_temp, output_power, bat_max_volt, 
+      bat_max_curr, remaining_charging_time, version, 
+      dcdc_state, dcdc_reference_volt, dcdc_output_volt, 
+      dcdc_output_curr, dcac_state, dcac_input_volt, 
+      dcac_input_curr, dcac_reference_power, dcac_output_power, 
+      dcac_temp_igbt1, dcac_temp_igbt2, dcac_temp_resonant_inductor, 
+      dcac_temp_transformer, dcac_insulation_resistance, 
+      dcac_temp_coil, ivu_state, ivu_relay_volt, 
+      ivu_bat_charging_volt, ivu_bat_charging_curr, ivu_bat_max_volt, 
+      ivu_bat_max_curr, ivu_charged_energy, ivu_remaining_charging_time, 
+      soc, ivu_temp_coil1, ivu_temp_coil2, 
+      ivu_temp_igbt1, ivu_temp_igbt2)
+    values (#{id,jdbcType=INTEGER}, #{timestamp,jdbcType=TIMESTAMP}, #{ip,jdbcType=VARCHAR}, 
+      #{iapState,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{operatingState,jdbcType=INTEGER}, 
+      #{stationState,jdbcType=INTEGER}, #{inputVolt,jdbcType=DOUBLE}, #{inputCurr,jdbcType=DOUBLE}, 
+      #{outputVolt,jdbcType=DOUBLE}, #{outputCurr,jdbcType=DOUBLE}, #{coilCurr,jdbcType=DOUBLE}, 
+      #{inverterTemp,jdbcType=DOUBLE}, #{outputPower,jdbcType=DOUBLE}, #{batMaxVolt,jdbcType=DOUBLE}, 
+      #{batMaxCurr,jdbcType=DOUBLE}, #{remainingChargingTime,jdbcType=DOUBLE}, #{version,jdbcType=VARCHAR}, 
+      #{dcdcState,jdbcType=INTEGER}, #{dcdcReferenceVolt,jdbcType=DOUBLE}, #{dcdcOutputVolt,jdbcType=DOUBLE}, 
+      #{dcdcOutputCurr,jdbcType=DOUBLE}, #{dcacState,jdbcType=INTEGER}, #{dcacInputVolt,jdbcType=DOUBLE}, 
+      #{dcacInputCurr,jdbcType=DOUBLE}, #{dcacReferencePower,jdbcType=DOUBLE}, #{dcacOutputPower,jdbcType=DOUBLE}, 
+      #{dcacTempIgbt1,jdbcType=DOUBLE}, #{dcacTempIgbt2,jdbcType=DOUBLE}, #{dcacTempResonantInductor,jdbcType=DOUBLE}, 
+      #{dcacTempTransformer,jdbcType=DOUBLE}, #{dcacInsulationResistance,jdbcType=DOUBLE}, 
+      #{dcacTempCoil,jdbcType=DOUBLE}, #{ivuState,jdbcType=INTEGER}, #{ivuRelayVolt,jdbcType=DOUBLE}, 
+      #{ivuBatChargingVolt,jdbcType=DOUBLE}, #{ivuBatChargingCurr,jdbcType=DOUBLE}, #{ivuBatMaxVolt,jdbcType=DOUBLE}, 
+      #{ivuBatMaxCurr,jdbcType=DOUBLE}, #{ivuChargedEnergy,jdbcType=DOUBLE}, #{ivuRemainingChargingTime,jdbcType=DOUBLE}, 
+      #{soc,jdbcType=INTEGER}, #{ivuTempCoil1,jdbcType=DOUBLE}, #{ivuTempCoil2,jdbcType=DOUBLE}, 
+      #{ivuTempIgbt1,jdbcType=DOUBLE}, #{ivuTempIgbt2,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.winterchen.model.data" >
+    insert into data_test
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="timestamp != null" >
+        timestamp,
+      </if>
+      <if test="ip != null" >
+        ip,
+      </if>
+      <if test="iapState != null" >
+        iap_state,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="operatingState != null" >
+        operating_state,
+      </if>
+      <if test="stationState != null" >
+        station_state,
+      </if>
+      <if test="inputVolt != null" >
+        input_volt,
+      </if>
+      <if test="inputCurr != null" >
+        input_curr,
+      </if>
+      <if test="outputVolt != null" >
+        output_volt,
+      </if>
+      <if test="outputCurr != null" >
+        output_curr,
+      </if>
+      <if test="coilCurr != null" >
+        coil_curr,
+      </if>
+      <if test="inverterTemp != null" >
+        inverter_temp,
+      </if>
+      <if test="outputPower != null" >
+        output_power,
+      </if>
+      <if test="batMaxVolt != null" >
+        bat_max_volt,
+      </if>
+      <if test="batMaxCurr != null" >
+        bat_max_curr,
+      </if>
+      <if test="remainingChargingTime != null" >
+        remaining_charging_time,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="dcdcState != null" >
+        dcdc_state,
+      </if>
+      <if test="dcdcReferenceVolt != null" >
+        dcdc_reference_volt,
+      </if>
+      <if test="dcdcOutputVolt != null" >
+        dcdc_output_volt,
+      </if>
+      <if test="dcdcOutputCurr != null" >
+        dcdc_output_curr,
+      </if>
+      <if test="dcacState != null" >
+        dcac_state,
+      </if>
+      <if test="dcacInputVolt != null" >
+        dcac_input_volt,
+      </if>
+      <if test="dcacInputCurr != null" >
+        dcac_input_curr,
+      </if>
+      <if test="dcacReferencePower != null" >
+        dcac_reference_power,
+      </if>
+      <if test="dcacOutputPower != null" >
+        dcac_output_power,
+      </if>
+      <if test="dcacTempIgbt1 != null" >
+        dcac_temp_igbt1,
+      </if>
+      <if test="dcacTempIgbt2 != null" >
+        dcac_temp_igbt2,
+      </if>
+      <if test="dcacTempResonantInductor != null" >
+        dcac_temp_resonant_inductor,
+      </if>
+      <if test="dcacTempTransformer != null" >
+        dcac_temp_transformer,
+      </if>
+      <if test="dcacInsulationResistance != null" >
+        dcac_insulation_resistance,
+      </if>
+      <if test="dcacTempCoil != null" >
+        dcac_temp_coil,
+      </if>
+      <if test="ivuState != null" >
+        ivu_state,
+      </if>
+      <if test="ivuRelayVolt != null" >
+        ivu_relay_volt,
+      </if>
+      <if test="ivuBatChargingVolt != null" >
+        ivu_bat_charging_volt,
+      </if>
+      <if test="ivuBatChargingCurr != null" >
+        ivu_bat_charging_curr,
+      </if>
+      <if test="ivuBatMaxVolt != null" >
+        ivu_bat_max_volt,
+      </if>
+      <if test="ivuBatMaxCurr != null" >
+        ivu_bat_max_curr,
+      </if>
+      <if test="ivuChargedEnergy != null" >
+        ivu_charged_energy,
+      </if>
+      <if test="ivuRemainingChargingTime != null" >
+        ivu_remaining_charging_time,
+      </if>
+      <if test="soc != null" >
+        soc,
+      </if>
+      <if test="ivuTempCoil1 != null" >
+        ivu_temp_coil1,
+      </if>
+      <if test="ivuTempCoil2 != null" >
+        ivu_temp_coil2,
+      </if>
+      <if test="ivuTempIgbt1 != null" >
+        ivu_temp_igbt1,
+      </if>
+      <if test="ivuTempIgbt2 != null" >
+        ivu_temp_igbt2,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="timestamp != null" >
+        #{timestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ip != null" >
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="iapState != null" >
+        #{iapState,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="operatingState != null" >
+        #{operatingState,jdbcType=INTEGER},
+      </if>
+      <if test="stationState != null" >
+        #{stationState,jdbcType=INTEGER},
+      </if>
+      <if test="inputVolt != null" >
+        #{inputVolt,jdbcType=DOUBLE},
+      </if>
+      <if test="inputCurr != null" >
+        #{inputCurr,jdbcType=DOUBLE},
+      </if>
+      <if test="outputVolt != null" >
+        #{outputVolt,jdbcType=DOUBLE},
+      </if>
+      <if test="outputCurr != null" >
+        #{outputCurr,jdbcType=DOUBLE},
+      </if>
+      <if test="coilCurr != null" >
+        #{coilCurr,jdbcType=DOUBLE},
+      </if>
+      <if test="inverterTemp != null" >
+        #{inverterTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="outputPower != null" >
+        #{outputPower,jdbcType=DOUBLE},
+      </if>
+      <if test="batMaxVolt != null" >
+        #{batMaxVolt,jdbcType=DOUBLE},
+      </if>
+      <if test="batMaxCurr != null" >
+        #{batMaxCurr,jdbcType=DOUBLE},
+      </if>
+      <if test="remainingChargingTime != null" >
+        #{remainingChargingTime,jdbcType=DOUBLE},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="dcdcState != null" >
+        #{dcdcState,jdbcType=INTEGER},
+      </if>
+      <if test="dcdcReferenceVolt != null" >
+        #{dcdcReferenceVolt,jdbcType=DOUBLE},
+      </if>
+      <if test="dcdcOutputVolt != null" >
+        #{dcdcOutputVolt,jdbcType=DOUBLE},
+      </if>
+      <if test="dcdcOutputCurr != null" >
+        #{dcdcOutputCurr,jdbcType=DOUBLE},
+      </if>
+      <if test="dcacState != null" >
+        #{dcacState,jdbcType=INTEGER},
+      </if>
+      <if test="dcacInputVolt != null" >
+        #{dcacInputVolt,jdbcType=DOUBLE},
+      </if>
+      <if test="dcacInputCurr != null" >
+        #{dcacInputCurr,jdbcType=DOUBLE},
+      </if>
+      <if test="dcacReferencePower != null" >
+        #{dcacReferencePower,jdbcType=DOUBLE},
+      </if>
+      <if test="dcacOutputPower != null" >
+        #{dcacOutputPower,jdbcType=DOUBLE},
+      </if>
+      <if test="dcacTempIgbt1 != null" >
+        #{dcacTempIgbt1,jdbcType=DOUBLE},
+      </if>
+      <if test="dcacTempIgbt2 != null" >
+        #{dcacTempIgbt2,jdbcType=DOUBLE},
+      </if>
+      <if test="dcacTempResonantInductor != null" >
+        #{dcacTempResonantInductor,jdbcType=DOUBLE},
+      </if>
+      <if test="dcacTempTransformer != null" >
+        #{dcacTempTransformer,jdbcType=DOUBLE},
+      </if>
+      <if test="dcacInsulationResistance != null" >
+        #{dcacInsulationResistance,jdbcType=DOUBLE},
+      </if>
+      <if test="dcacTempCoil != null" >
+        #{dcacTempCoil,jdbcType=DOUBLE},
+      </if>
+      <if test="ivuState != null" >
+        #{ivuState,jdbcType=INTEGER},
+      </if>
+      <if test="ivuRelayVolt != null" >
+        #{ivuRelayVolt,jdbcType=DOUBLE},
+      </if>
+      <if test="ivuBatChargingVolt != null" >
+        #{ivuBatChargingVolt,jdbcType=DOUBLE},
+      </if>
+      <if test="ivuBatChargingCurr != null" >
+        #{ivuBatChargingCurr,jdbcType=DOUBLE},
+      </if>
+      <if test="ivuBatMaxVolt != null" >
+        #{ivuBatMaxVolt,jdbcType=DOUBLE},
+      </if>
+      <if test="ivuBatMaxCurr != null" >
+        #{ivuBatMaxCurr,jdbcType=DOUBLE},
+      </if>
+      <if test="ivuChargedEnergy != null" >
+        #{ivuChargedEnergy,jdbcType=DOUBLE},
+      </if>
+      <if test="ivuRemainingChargingTime != null" >
+        #{ivuRemainingChargingTime,jdbcType=DOUBLE},
+      </if>
+      <if test="soc != null" >
+        #{soc,jdbcType=INTEGER},
+      </if>
+      <if test="ivuTempCoil1 != null" >
+        #{ivuTempCoil1,jdbcType=DOUBLE},
+      </if>
+      <if test="ivuTempCoil2 != null" >
+        #{ivuTempCoil2,jdbcType=DOUBLE},
+      </if>
+      <if test="ivuTempIgbt1 != null" >
+        #{ivuTempIgbt1,jdbcType=DOUBLE},
+      </if>
+      <if test="ivuTempIgbt2 != null" >
+        #{ivuTempIgbt2,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.winterchen.model.data" >
+    update data_test
+    <set >
+      <if test="timestamp != null" >
+        timestamp = #{timestamp,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ip != null" >
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="iapState != null" >
+        iap_state = #{iapState,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="operatingState != null" >
+        operating_state = #{operatingState,jdbcType=INTEGER},
+      </if>
+      <if test="stationState != null" >
+        station_state = #{stationState,jdbcType=INTEGER},
+      </if>
+      <if test="inputVolt != null" >
+        input_volt = #{inputVolt,jdbcType=DOUBLE},
+      </if>
+      <if test="inputCurr != null" >
+        input_curr = #{inputCurr,jdbcType=DOUBLE},
+      </if>
+      <if test="outputVolt != null" >
+        output_volt = #{outputVolt,jdbcType=DOUBLE},
+      </if>
+      <if test="outputCurr != null" >
+        output_curr = #{outputCurr,jdbcType=DOUBLE},
+      </if>
+      <if test="coilCurr != null" >
+        coil_curr = #{coilCurr,jdbcType=DOUBLE},
+      </if>
+      <if test="inverterTemp != null" >
+        inverter_temp = #{inverterTemp,jdbcType=DOUBLE},
+      </if>
+      <if test="outputPower != null" >
+        output_power = #{outputPower,jdbcType=DOUBLE},
+      </if>
+      <if test="batMaxVolt != null" >
+        bat_max_volt = #{batMaxVolt,jdbcType=DOUBLE},
+      </if>
+      <if test="batMaxCurr != null" >
+        bat_max_curr = #{batMaxCurr,jdbcType=DOUBLE},
+      </if>
+      <if test="remainingChargingTime != null" >
+        remaining_charging_time = #{remainingChargingTime,jdbcType=DOUBLE},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=VARCHAR},
+      </if>
+      <if test="dcdcState != null" >
+        dcdc_state = #{dcdcState,jdbcType=INTEGER},
+      </if>
+      <if test="dcdcReferenceVolt != null" >
+        dcdc_reference_volt = #{dcdcReferenceVolt,jdbcType=DOUBLE},
+      </if>
+      <if test="dcdcOutputVolt != null" >
+        dcdc_output_volt = #{dcdcOutputVolt,jdbcType=DOUBLE},
+      </if>
+      <if test="dcdcOutputCurr != null" >
+        dcdc_output_curr = #{dcdcOutputCurr,jdbcType=DOUBLE},
+      </if>
+      <if test="dcacState != null" >
+        dcac_state = #{dcacState,jdbcType=INTEGER},
+      </if>
+      <if test="dcacInputVolt != null" >
+        dcac_input_volt = #{dcacInputVolt,jdbcType=DOUBLE},
+      </if>
+      <if test="dcacInputCurr != null" >
+        dcac_input_curr = #{dcacInputCurr,jdbcType=DOUBLE},
+      </if>
+      <if test="dcacReferencePower != null" >
+        dcac_reference_power = #{dcacReferencePower,jdbcType=DOUBLE},
+      </if>
+      <if test="dcacOutputPower != null" >
+        dcac_output_power = #{dcacOutputPower,jdbcType=DOUBLE},
+      </if>
+      <if test="dcacTempIgbt1 != null" >
+        dcac_temp_igbt1 = #{dcacTempIgbt1,jdbcType=DOUBLE},
+      </if>
+      <if test="dcacTempIgbt2 != null" >
+        dcac_temp_igbt2 = #{dcacTempIgbt2,jdbcType=DOUBLE},
+      </if>
+      <if test="dcacTempResonantInductor != null" >
+        dcac_temp_resonant_inductor = #{dcacTempResonantInductor,jdbcType=DOUBLE},
+      </if>
+      <if test="dcacTempTransformer != null" >
+        dcac_temp_transformer = #{dcacTempTransformer,jdbcType=DOUBLE},
+      </if>
+      <if test="dcacInsulationResistance != null" >
+        dcac_insulation_resistance = #{dcacInsulationResistance,jdbcType=DOUBLE},
+      </if>
+      <if test="dcacTempCoil != null" >
+        dcac_temp_coil = #{dcacTempCoil,jdbcType=DOUBLE},
+      </if>
+      <if test="ivuState != null" >
+        ivu_state = #{ivuState,jdbcType=INTEGER},
+      </if>
+      <if test="ivuRelayVolt != null" >
+        ivu_relay_volt = #{ivuRelayVolt,jdbcType=DOUBLE},
+      </if>
+      <if test="ivuBatChargingVolt != null" >
+        ivu_bat_charging_volt = #{ivuBatChargingVolt,jdbcType=DOUBLE},
+      </if>
+      <if test="ivuBatChargingCurr != null" >
+        ivu_bat_charging_curr = #{ivuBatChargingCurr,jdbcType=DOUBLE},
+      </if>
+      <if test="ivuBatMaxVolt != null" >
+        ivu_bat_max_volt = #{ivuBatMaxVolt,jdbcType=DOUBLE},
+      </if>
+      <if test="ivuBatMaxCurr != null" >
+        ivu_bat_max_curr = #{ivuBatMaxCurr,jdbcType=DOUBLE},
+      </if>
+      <if test="ivuChargedEnergy != null" >
+        ivu_charged_energy = #{ivuChargedEnergy,jdbcType=DOUBLE},
+      </if>
+      <if test="ivuRemainingChargingTime != null" >
+        ivu_remaining_charging_time = #{ivuRemainingChargingTime,jdbcType=DOUBLE},
+      </if>
+      <if test="soc != null" >
+        soc = #{soc,jdbcType=INTEGER},
+      </if>
+      <if test="ivuTempCoil1 != null" >
+        ivu_temp_coil1 = #{ivuTempCoil1,jdbcType=DOUBLE},
+      </if>
+      <if test="ivuTempCoil2 != null" >
+        ivu_temp_coil2 = #{ivuTempCoil2,jdbcType=DOUBLE},
+      </if>
+      <if test="ivuTempIgbt1 != null" >
+        ivu_temp_igbt1 = #{ivuTempIgbt1,jdbcType=DOUBLE},
+      </if>
+      <if test="ivuTempIgbt2 != null" >
+        ivu_temp_igbt2 = #{ivuTempIgbt2,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.winterchen.model.data" >
+    update data_test
+    set timestamp = #{timestamp,jdbcType=TIMESTAMP},
+      ip = #{ip,jdbcType=VARCHAR},
+      iap_state = #{iapState,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      operating_state = #{operatingState,jdbcType=INTEGER},
+      station_state = #{stationState,jdbcType=INTEGER},
+      input_volt = #{inputVolt,jdbcType=DOUBLE},
+      input_curr = #{inputCurr,jdbcType=DOUBLE},
+      output_volt = #{outputVolt,jdbcType=DOUBLE},
+      output_curr = #{outputCurr,jdbcType=DOUBLE},
+      coil_curr = #{coilCurr,jdbcType=DOUBLE},
+      inverter_temp = #{inverterTemp,jdbcType=DOUBLE},
+      output_power = #{outputPower,jdbcType=DOUBLE},
+      bat_max_volt = #{batMaxVolt,jdbcType=DOUBLE},
+      bat_max_curr = #{batMaxCurr,jdbcType=DOUBLE},
+      remaining_charging_time = #{remainingChargingTime,jdbcType=DOUBLE},
+      version = #{version,jdbcType=VARCHAR},
+      dcdc_state = #{dcdcState,jdbcType=INTEGER},
+      dcdc_reference_volt = #{dcdcReferenceVolt,jdbcType=DOUBLE},
+      dcdc_output_volt = #{dcdcOutputVolt,jdbcType=DOUBLE},
+      dcdc_output_curr = #{dcdcOutputCurr,jdbcType=DOUBLE},
+      dcac_state = #{dcacState,jdbcType=INTEGER},
+      dcac_input_volt = #{dcacInputVolt,jdbcType=DOUBLE},
+      dcac_input_curr = #{dcacInputCurr,jdbcType=DOUBLE},
+      dcac_reference_power = #{dcacReferencePower,jdbcType=DOUBLE},
+      dcac_output_power = #{dcacOutputPower,jdbcType=DOUBLE},
+      dcac_temp_igbt1 = #{dcacTempIgbt1,jdbcType=DOUBLE},
+      dcac_temp_igbt2 = #{dcacTempIgbt2,jdbcType=DOUBLE},
+      dcac_temp_resonant_inductor = #{dcacTempResonantInductor,jdbcType=DOUBLE},
+      dcac_temp_transformer = #{dcacTempTransformer,jdbcType=DOUBLE},
+      dcac_insulation_resistance = #{dcacInsulationResistance,jdbcType=DOUBLE},
+      dcac_temp_coil = #{dcacTempCoil,jdbcType=DOUBLE},
+      ivu_state = #{ivuState,jdbcType=INTEGER},
+      ivu_relay_volt = #{ivuRelayVolt,jdbcType=DOUBLE},
+      ivu_bat_charging_volt = #{ivuBatChargingVolt,jdbcType=DOUBLE},
+      ivu_bat_charging_curr = #{ivuBatChargingCurr,jdbcType=DOUBLE},
+      ivu_bat_max_volt = #{ivuBatMaxVolt,jdbcType=DOUBLE},
+      ivu_bat_max_curr = #{ivuBatMaxCurr,jdbcType=DOUBLE},
+      ivu_charged_energy = #{ivuChargedEnergy,jdbcType=DOUBLE},
+      ivu_remaining_charging_time = #{ivuRemainingChargingTime,jdbcType=DOUBLE},
+      soc = #{soc,jdbcType=INTEGER},
+      ivu_temp_coil1 = #{ivuTempCoil1,jdbcType=DOUBLE},
+      ivu_temp_coil2 = #{ivuTempCoil2,jdbcType=DOUBLE},
+      ivu_temp_igbt1 = #{ivuTempIgbt1,jdbcType=DOUBLE},
+      ivu_temp_igbt2 = #{ivuTempIgbt2,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
