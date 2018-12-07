@@ -16,12 +16,11 @@ public class Hash {
      * 待添加入Hash环的数据表列
      */
     public static String[] ips ={"192.168.9.100","192.168.9.99","192.168.9.98","192.168.9.97","192.168.9.96"};
-    public static String[] tables ={"data_1","data_2","data_3","data_4","data_5"};//完整数据的表
-//    public static String[] abtables ={"abdata_1","abdata_2","abdata_3","abdata_4","abdata_5"};//异常数据的表
+    public static String[] suffix ={"1","2","3","4","5"};
     /**
      * * key表示表的hash值，value表示数据库表的名称
      */
-    private static SortedMap<Integer, String> sortedMap = new TreeMap<>();
+    private static SortedMap<String, String> sortedMap = new TreeMap<>();
 //    private static Map<String,String>
 
     /**
@@ -31,8 +30,7 @@ public class Hash {
     {
         for(int i=0;i<ips.length;i++)
         {
-            int hash = getHash(ips[i]);
-            sortedMap.put(hash, tables[i]);
+            sortedMap.put(ips[i], suffix[i]);
         }
     }
     /**
@@ -58,25 +56,14 @@ public class Hash {
     /**
      * 得到应当路由到的结点，这里的结点指的是数据记录中的ip
      * **/
-    public static String getTable(String node)//TODO:可以看一下人家是怎么写的，经过了哪些步骤，就把结点对应的服务器找到了？
-//    public static String getTable()//如果用get，set方法去赋值的话，就不需要传参了
+    public static String getSuffix(String node)
     {
-        // 得到带路由的结点的Hash值
-
-//        String node1 = getNode();
-//        int hash = getHash(node1);
-        int hash = getHash(node);
-        // 得到大于该Hash值的所有Map
-        SortedMap<Integer, String> subMap = sortedMap.tailMap(hash);
-        // 第一个Key就是顺时针过去离node最近的那个结点
-        Integer i = subMap.firstKey();
-        // 返回对应的服务器名称
-        return subMap.get(i);
+        return sortedMap.get(node);
     }
 
-    /*public static void main(String[] args){
-
-    }*/
+    public static void main (String[] aa){
+        System.out.println(getSuffix("192.168.9.100"));
+    }
 }
 
 

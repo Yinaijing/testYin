@@ -41,7 +41,5 @@ public interface dataService {
 
     void ClearList();
 
-    data getTime(int id);
-
-    List<datas> getDatas(int id,int sec);
+    List<datas> getDatas(int id,String time,String ip);
 }

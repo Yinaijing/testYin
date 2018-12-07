@@ -27,7 +27,5 @@ public interface dataMapper {
 
     int insertByTableName(String tableName,data dataObject);
 
-    data getTime(@Param("id") int id);
-
-    List<data> selectAbDatas(@Param("beginTime")String beginTime, @Param("endTime")String endTime,@Param("id")int id);
+    List<data> selectDatas(@Param("tableName")String tableName,@Param("beginTime")String beginTime, @Param("endTime")String endTime,@Param("ip")String ip);
 }

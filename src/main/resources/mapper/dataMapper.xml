@@ -70,7 +70,6 @@
     select * from ${tableName}
     where timestamp between #{beginTime} and #{endTime}
     and substring(ip,2,13)=#{ip}
-    and substring(id)=#{id}
   </select>
 
   <select id="existTable" parameterType="String" resultType="Integer">

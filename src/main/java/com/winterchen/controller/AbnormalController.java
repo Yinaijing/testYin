@@ -1,7 +1,6 @@
 package com.winterchen.controller;
 
 import com.winterchen.model.AbnormalData;
-import com.winterchen.model.data;
 import com.winterchen.model.datas;
 import com.winterchen.service.user.dataService;
 import org.apache.log4j.Logger;
@@ -11,9 +10,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.text.ParseException;
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /***
@@ -57,8 +53,8 @@ public class AbnormalController {
     }
 
     @RequestMapping(value = "/datas",method = RequestMethod.GET)
-    public List<datas> getAbDatas(@RequestParam int id,@RequestParam int sec){
-        return dataService.getDatas(id,sec);
+    public List<datas> getAbDatas(@RequestParam int id,@RequestParam String time,@RequestParam String ip){
+        return dataService.getDatas(id,time,ip);
     }
 
     /*@RequestMapping(value = "/time",method = RequestMethod.GET)

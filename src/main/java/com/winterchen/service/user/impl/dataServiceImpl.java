@@ -7,6 +7,7 @@ import com.winterchen.model.data;
 import com.winterchen.model.datas;
 import com.winterchen.service.user.dataService;
 import com.winterchen.util.GetTime;
+import com.winterchen.util.Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-//import com.winterchen.util.GetTime;
 /**
  * @author miaojinlong
  * @create 2018-11-12-15:49
@@ -24,7 +24,12 @@ import java.util.List;
 public class dataServiceImpl implements dataService {
 
     private static List<AbnormalData> Ablist = new ArrayList<>();
-    private static final String abTableName ="data_ab";
+    List<datas> lst = new ArrayList<>();
+
+    private static final String abTableName = "data_ab";
+    private static final String tablePreName = "data_";
+    private static final String tableAbPreName = "abdata_";
+    private static final int SEC = 1;
 
     @Autowired
     private dataMapper dataMapper1;
@@ -78,35 +83,47 @@ public class dataServiceImpl implements dataService {
     }
 
     @Override
-    public List<datas> getDatas(int id,int sec){
-        List<datas> lst = new ArrayList<>();
-        List<data> list1 = new ArrayList<>();
-        List<data> list2 = new ArrayList<>();
+    public List<datas> getDatas(int id,String time,String ip){
+        lst.clear();
+        List<data> listData = new ArrayList<>();
+        List<data> listAbData = new ArrayList<>();
 
-        datas da = new datas();
-        da.setD(dataMapper1.getTime(id));
-        da.setType("0");
-        lst.add(0,da);
-        Date t = dataMapper1.getTime(id).getTimestamp();
-        String beginTime = GetTime.getDateTime(t,(-1)*sec);
-        String endTime = GetTime.getDateTime(t,sec);
-        list1.addAll(dataMapper1.selectDatas(beginTime,endTime));
-        list2.addAll(dataMapper1.selectAbDatas(beginTime,endTime,id));
+        String tableName = tablePreName + Hash.getSuffix(ip);
+        String tableAbName = tableAbPreName + Hash.getSuffix(ip);
 
-        for(int i = 0; i < list1.size(); i++){
-            da = new datas();
-            da.setD(list1.get(i));
-            da.setType("1");
-            lst.add(i+1,da);
-        }
+        String beginTime = GetTime.getDateTime(time,(-1)*SEC);
+        String endTime = GetTime.getDateTime(time,SEC);
 
-        for(int i = 0; i < list2.size(); i++){
-            da = new datas();
-            da.setD(list2.get(i));
-            da.setType("-1");
-            lst.add(i+1+list1.size(),da);
-        }
+        listData.addAll(dataMapper1.selectDatas(tableName,beginTime,endTime,ip));
+        listAbData.addAll(dataMapper1.selectDatas(tableAbName,beginTime,endTime,ip));
+
+        getDatas(listData,-1);
+        getDatas(listAbData,id);
+
         Collections.sort(lst);
+        return lst;
+    }
+
+    public List<datas> getDatas(List<data> list,int id){
+        if (id < 0){
+            for(int i = 0; i < list.size(); i++){
+                datas da = new datas();
+                da.setD(list.get(i));
+                da.setType("1");
+                lst.add(da);
+            }
+        }
+        else{
+            for(int i = 0; i < list.size(); i++){
+                datas da = new datas();
+                da.setD(list.get(i));
+                da.setType("-1");
+                if (list.get(i).getId() == id){
+                    da.setType("0");
+                }
+                lst.add(da);
+            }
+        }
         return lst;
     }
 
@@ -129,10 +146,6 @@ public class dataServiceImpl implements dataService {
         }
     }
 
-    /**
-     * 功能：就觉得这个可不可以写到insertAb2里面去呢？？？？这样可以定义少一个接口。
-     * @return
-     */
     @Override
     public List<AbnormalData> getRealtimeAb(){
         return Ablist;
@@ -143,37 +156,4 @@ public class dataServiceImpl implements dataService {
         Ablist.clear();
     }
 
-    @Override
-    public data getTime(int id){
-        return dataMapper1.getTime(id);
-    }
-
-    /*QueryInformationResponseVo returnVo = null;
-    int count = 0;
-    //收集页面信息
-    List<PrpCmain> blPrpCmain = new ArrayList<PrpCmain>();
-    List<QueryInformationResponseVo> returnList = new ArrayList<QueryInformationResponseVo>();
-    TreeSet seqKey = new TreeSet(sequence.keySet());
-    Iterator it = seqKey.iterator();
-				    while(it.hasNext()){
-        returnVo = new QueryInformationResponseVo();//循环一次重新声明
-        String flag = (String)it.next();
-        prpCmainSchema = (PrpCmain)sequence.get(flag);
-        PrpCitemcar  dbPrpCitemCarItem = new PrpCitemcar();
-        dbPrpCitemCarItem = (PrpCitemcar)cItemCarTable.get(prpCmainSchema.getPolicyNo());
-        returnVo.setFlag(flag);
-        returnVo.setPolicyNo(prpCmainSchema.getPolicyNo());
-        returnVo.setCarOwner(dbPrpCitemCarItem.getCarOwner());
-        returnVo.setLicenseNo(dbPrpCitemCarItem.getLicenseNo());
-        returnVo.setEngineNo(dbPrpCitemCarItem.getEngineNo());
-        returnVo.setFrameNo(dbPrpCitemCarItem.getFrameNo());
-        returnVo.setInsuredName(prpCmainSchema.getInsuredName());
-        returnVo.setStartDate(StringUtils.dateTimeToStr(prpCmainSchema.getStartDate()));
-        returnVo.setEndDate(StringUtils.dateTimeToStr(prpCmainSchema.getEndDate()));
-        returnVo.setPolicyNo(prpCmainSchema.getPolicyNo());
-        String comName = prpDcompanyApi.translateCodeByPK(prpCmainSchema.getComCode());
-        returnVo.setComName(comName);
-        returnList.add(returnVo);
-        count++;
-    }*/
 }
